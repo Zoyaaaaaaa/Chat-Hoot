@@ -1,0 +1,126 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="message-box">
+  <h2>Chat Room: {{ code }}</h2>
+  <div class="messages" id="messages"></div>
+  <div class="inputs">
+    <input type="text" rows="3" placeholder="Message" name="message" id="message"/>
+    <form id="imageUploadForm" enctype="multipart/form-data">
+      <input type="file" id="imageInput" name="image" accept="image/*" />
+      <button type="button" id="sendImageButton">Send Image</button>
+    </form>
+    <form id="audioUploadForm" enctype="multipart/form-data">
+      <input type="file" id="audioInput" name="audio" accept="audio/*" />
+      <button type="button" id="sendAudioButton">Send Audio</button>
+    </form>
+    <form id="videoUploadForm" enctype="multipart/form-data">
+      <input type="file" id="videoInput" name="video" accept="video/*" />
+      <button type="button" id="sendVideoButton">Send Video</button>
+    </form>
+    <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var socketio = io();
+//IMAGE
+  document.getElementById('sendImageButton').addEventListener('click', function() {
+    const input = document.getElementById('imageInput');
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const imageData = event.target.result;
+      socketio.emit('image', { data: imageData });
+    };
+
+    reader.readAsDataURL(file);
+  });
+// AUDIO
+document.getElementById('sendAudioButton').addEventListener('click', function() {
+    const input = document.getElementById('audioInput');
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const audioData = event.target.result;
+      socketio.emit('audio', { data: audioData });
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+// VIDEO 
+document.getElementById('sendVideoButton').addEventListener('click', function() {
+    const input = document.getElementById('videoInput');
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const videoData = event.target.result; 
+      socketio.emit('video', { data: videoData }); 
+    };
+
+    reader.readAsDataURL(file);
+  });
+//IMAGE
+  socketio.on('image', function(data) {
+    const messages = document.getElementById('messages');
+    const content = `
+      <div class="message">
+        <span><strong>${data.name}</strong>: <img src="${data.image}" alt="Image" style="max-width: 300px;"></span>
+        <span class="muted">${data.timestamp}</span>
+      </div>`;
+    messages.insertAdjacentHTML('beforeend', content);
+  });
+//AUDIO
+  socketio.on('audio', function(data) {
+    const messages = document.getElementById('messages');
+    const content = `
+      <div class="message">
+        <span><strong>${data.name}</strong>: <audio controls><source src="${data.audio}" type="audio/mp3"></audio></span>
+        <span class="muted">${data.timestamp}</span>
+      </div>`;
+    messages.insertAdjacentHTML('beforeend', content);
+  });
+  //Video
+  socketio.on('video', function(data) {
+    const messages = document.getElementById('messages');
+    const content = `
+      <div class="message">
+        <span><strong>${data.name}</strong>: <video controls><source src="${data.video}" type="video/mp4"></video></span>
+        <span class="muted">${data.timestamp}</span>
+      </div>`;
+    messages.insertAdjacentHTML('beforeend', content);
+  });
+//MESSAGES
+  const messages = document.getElementById("messages");
+
+  const createMessage = (name, msg) => {
+    const content = `
+      <div class="text">
+        <span>
+          <strong>${name}</strong>: ${msg}
+        </span>
+        <span class="muted">${new Date().toLocaleString()}</span>
+      </div>
+    `;
+    messages.innerHTML += content;
+  };
+
+  socketio.on("message", (data) => {
+    createMessage(data.name, data.message);
+  });
+
+  const sendMessage = () => {
+    const message = document.getElementById("message");
+
+    if (message.value === "") return;
+
+    socketio.emit("message", { data: message.value });
+    message.value = "";
+  };
+</script>
+{% endblock %}

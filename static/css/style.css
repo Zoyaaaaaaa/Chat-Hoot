@@ -1,0 +1,168 @@
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.join{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.create{
+    width: 100%;
+
+}
+
+
+/**room page style */
+
+.message-box{
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    align-items: stretch;
+
+}
+
+.messages{
+    overflow-y: scroll;
+    flex: 1;
+    width: 100%;
+}
+
+.input{
+    padding: 10px;
+    display: flex;
+}
+h2{
+    text-align: center;
+
+}
+#message{
+    flex: 1;
+}
+
+.text{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+.muted{
+    font-size: 10px;
+    color: darkgray;
+}
+/* Basic styling for the form */
+.btns {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the header */
+.btns h3 {
+    color: #333;
+    text-align: center;
+}
+
+/* Style for the form elements */
+.btns label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.btns input,
+.btns button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for the Join button */
+.btns .join button {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Style for the Create button */
+.btns [name="create"] {
+    background-color: #2196F3;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Hover effect for buttons */
+.btns button:hover {
+    opacity: 0.8;
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 600px) {
+    .btns {
+        max-width: 100%;
+    }
+}
+
+
+body {
+    background: url(https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
+    background-size: cover;
+}
+
+#chat {
+    background: var(--chat-background);
+    max-width: 600px;
+    margin: 25px auto;
+    box-sizing: border-box;
+    padding: 1em;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+#chat::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80) fixed;
+    z-index: -1;
+}
+
+.inputs input,
+.inputs button {
+    background-color: #212324;
+    color: var(--chat-text-color);
+}
+
+/* ... (Paste the rest of your CSS here) ... */
+
