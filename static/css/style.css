@@ -1,27 +1,77 @@
-.content{
+/* home css */
+.content {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    height: 100vh; 
+    
 }
 
-.form{
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
+    padding: 25px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: rgba(204, 204, 204, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+ 
 }
-.join{
+
+.input-group {
     display: flex;
-    flex-direction: row;
+    align-items: center;
     width: 100%;
+    justify-content: space-between; 
 }
 
-.create{
-    width: 100%;
-
+.input-group label {
+ 
+    font-size: 25px; 
 }
+
+.input-field {
+    width: 200px; 
+    margin-left:8px ;
+    padding: 15px;
+    font-size: 20px; 
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+.button-group {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.button {
+    width: 100%;
+    padding: 15px;
+    font-size: 17px; 
+    background-color: lightblue;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+
+.button:hover {
+    background-color: #2584d2;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
+}
+
+
+
+/* .create {
+    margin-top: 5px; 
+} */
+
+
 
 
 /**room page style */
@@ -46,6 +96,54 @@
     width: 100%;
 }
 
+/* normal msg */
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    margin-left: 45px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    text-align: left;
+}
+
+.message-content {
+   
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 4px;
+    width: fit-content;
+    padding-left: 15px;
+    padding-right: 25px;
+  
+    
+}
+
+.message-time {
+    align-self: left;
+    margin-top: 5px; 
+    font-size: 17px; 
+    color: rgb(21, 21, 21);
+}
+
+/* has joined room msg */
+.join-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-bottom: 10px; 
+}
+
+.join-message span,
+.join-message div {
+    margin-bottom: 5px; 
+}
+
+.join-message .muted {
+    margin-top: 5px; 
+}
+
+
 .input{
     padding: 10px;
     display: flex;
@@ -67,70 +165,98 @@ h2{
     padding-right: 10px;
 
 }
+
+
+
+
 .muted{
     font-size: 10px;
-    color: darkgray;
+    color: rgb(103, 101, 101);
 }
 /* Basic styling for the form */
-.btns {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
-/* Style for the header */
-.btns h3 {
-    color: #333;
-    text-align: center;
-}
+.inputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+    margin: 10px;
+  }
+  
+  .input {
+    margin-right: 10px;
+  }
+  
+  .input:last-child {
+    margin-right: 0;
+  }
+  .inputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .message-input {
+    margin-bottom: 10px;
+  }
+  
+  .file-upload {
+    display: flex;
+  }
+  
+  .file-upload form {
+    display: flex;
+    align-items: center;
+  }
+  
+  .file-upload form input[type="file"] {
+    margin-right: 10px;
 
-/* Style for the form elements */
-.btns label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-}
-
-.btns input,
-.btns button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Style for the Join button */
-.btns .join button {
-    background-color: #4caf50;
-    color: #fff;
+  }
+  
+  .light-blue-button {
+    background-color: lightblue;
     cursor: pointer;
-}
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+  }
+  
+  .light-blue-button:hover {
+    background-color: #1994bd;
+    
+  }
+  
+  #send-btn {
 
-/* Style for the Create button */
-.btns [name="create"] {
-    background-color: #2196F3;
-    color: #fff;
-    cursor: pointer;
-}
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .send-group{
+    flex: column;
+  }
+  .input-field{
+       height: 5px;
+  }
+  .input {
+    height: 30px;
+  }
 
-/* Hover effect for buttons */
-.btns button:hover {
-    opacity: 0.8;
-}
-
-/* Responsive design for smaller screens */
+  /* images */
+  .icon {
+    width: 30px; 
+    margin-left: 10px; 
+    transform: translateY(10px);
+  }
 @media screen and (max-width: 600px) {
     .btns {
         max-width: 100%;
     }
 }
 
-
+/* base style */
 body {
     background: url(https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
     background-size: cover;
@@ -158,11 +284,5 @@ body {
     z-index: -1;
 }
 
-.inputs input,
-.inputs button {
-    background-color: #212324;
-    color: var(--chat-text-color);
-}
 
-/* ... (Paste the rest of your CSS here) ... */
 

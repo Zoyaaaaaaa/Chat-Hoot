@@ -1,21 +1,30 @@
-{% extends 'base.html' %} {% block content %}
-<form method="post" class="form">
-    <h3>Enter Chat room</h3>
-    <div>
-        <label>Name : </label>
-        <input type="text" name="name" placeholder="Enter your name" value="{{name}}">
-    </div>
-    <div class="join">
-        <input type="text"  name="code" placeholder="Enter room code" value="{{code}}">
-        <button type="submit" name="join">Join a Room</button>
-    </div>
-    <button type="submit" name="create" class="create">Create a Room</button>
-     {% if error %}
-    <ul>
-        <li>
-            {{ error }}
-        </li>
-    </ul>
-    {% endif %}
-</form>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+  <form method="post" class="form">
+      <h1>Enter Chat Room</h1>
+      <div class="input-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" value="{{name}}" class="input-field">
+      </div>
+      <div class="input-group">
+          <label for="code">Room No:</label>
+          <input type="text" id="code" name="code" placeholder="Enter room code" value="{{code}}" class="input-field">
+      </div>
+      
+      <div class="button-group">
+          <button type="submit" name="join" class="button">Join a Room</button>
+      </div>
+      <a>OR</a>
+      <button type="submit" name="create" class="button create">Create a Room</button>
+       {% if error %}
+      <ul>
+          <li>
+              {{ error }}
+          </li>
+      </ul>
+      {% endif %}
+  </form>
+</div>
 {% endblock %}

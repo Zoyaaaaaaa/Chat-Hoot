@@ -13,6 +13,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 socketio = SocketIO(app)
 
 rooms = {}
+user_colors = {}
 
 def generate_unique_code(length):
     while True:
@@ -47,6 +48,7 @@ def home():
         return redirect(url_for('room'))
     
     return render_template('home.html')
+
 # IMAGE
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -70,6 +72,7 @@ def room():
     if room is None or session.get('name') is None or room not in rooms:
         return redirect(url_for('home'))
     return render_template('room.html', code=room, messages=rooms[room]["messages"])
+
 # AUDIO
 @socketio.on('audio')
 def handle_audio(data):
@@ -82,11 +85,13 @@ def handle_audio(data):
         content = {
             'name': name,
             'audio': audio_data,
-            'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+            'color': user_colors.get(name, 'lightblue')  
         }
         rooms[room]['messages'].append(content)
         emit('audio', content, room=room)
-#VIDEO
+
+# VIDEO
 @socketio.on('video')
 def handle_video(data):
     room = session.get('room')
@@ -98,23 +103,28 @@ def handle_video(data):
         content = {
             'name': name,
             'video': video_data,
-            'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+            'color': user_colors.get(name, 'lightblue')  
         }
         rooms[room]['messages'].append(content)
         emit('video', content, room=room)
+
+# MESSAGE
 @socketio.on('message')
 def message(data):
     room = session.get('room')
     if room not in rooms:
         return
+    name = session.get('name')
     content = {
-        'name': session.get('name'),
-        'message': data['data']
+        'name': name,
+        'message': data['data'],
+        'color': user_colors.get(name, 'lightblue')  
     }
     send(content, to=room)
     rooms[room]["messages"].append(content)
-    print(f"{session.get('name')} said: {data['data']}")
-#IMAGE
+
+# IMAGE
 @socketio.on('image')
 def handle_image(data):
     room = session.get('room')
@@ -126,11 +136,13 @@ def handle_image(data):
         content = {
             'name': name,
             'image': image_data,
-            'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+            'color': user_colors.get(name, 'lightblue')  # Get user's color or default to 'lightblue'
         }
         rooms[room]['messages'].append(content)
         emit('image', content, room=room)
 
+# CONNECT
 @socketio.on('connect')
 def connect():
     room = session.get('room')
@@ -143,8 +155,10 @@ def connect():
     join_room(room)
     send({"name": name, "message": "has joined the room"}, to=room)
     rooms[room]["members"] += 1
+    user_colors[name] = generate_random_pastel_color() 
     print(f"{name} joined room {room}")
 
+# DISCONNECT
 @socketio.on('disconnect')
 def disconnect():
     room = session.get('room')
@@ -156,7 +170,25 @@ def disconnect():
         if rooms[room]["members"] <= 0:
             del rooms[room]
     send({"name": name, "message": "has left the room"}, to=room)
+     
     print(f"{name} left room {room}")
+
+import random
+
+def generate_random_pastel_color():
+  
+    generated_colors = set()
+
+    while True:
+        # Create pastel color 
+        hue = random.randint(0, 360)
+        lightness = random.randint(60, 80)  
+        new_color = f"hsl({hue}, 70%, {lightness}%)"
+        
+        if new_color not in generated_colors:
+            generated_colors.add(new_color)
+            return new_color
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

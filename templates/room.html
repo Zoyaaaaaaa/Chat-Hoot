@@ -1,4 +1,5 @@
 
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -6,26 +7,32 @@
   <h2>Chat Room: {{ code }}</h2>
   <div class="messages" id="messages"></div>
   <div class="inputs">
-    <input type="text" rows="3" placeholder="Message" name="message" id="message"/>
+    <div class="send-group"> 
+    <input type="text" rows="3" placeholder="Message" name="message" id="message" class="input-field"/>
+    <button type="button" name="send" id="send-btn" onClick="sendMessage()" class="light-blue-button">Send Message</button>
+    </div>
     <form id="imageUploadForm" enctype="multipart/form-data">
-      <input type="file" id="imageInput" name="image" accept="image/*" />
-      <button type="button" id="sendImageButton">Send Image</button>
+      <img src="https://tse1.mm.bing.net/th?id=OIP.eURN6FEaba3_pAguBjhvsgHaHa&pid=Api&P=0&h=180" alt="Camera Icon" class="icon">
+      <input type="file" id="imageInput" name="image" accept="image/*" class="file-input"/>
+      <button type="button" id="sendImageButton" class="light-blue-button">Send Image</button>
     </form>
+    
     <form id="audioUploadForm" enctype="multipart/form-data">
+      <img src="https://tse4.mm.bing.net/th?id=OIP.f6lHWw-wBaW_CpXa9esY3gHaHa&pid=Api&P=0&h=180" alt="Microphone Icon" class="icon">
       <input type="file" id="audioInput" name="audio" accept="audio/*" />
-      <button type="button" id="sendAudioButton">Send Audio</button>
+      <button type="button" id="sendAudioButton" class="light-blue-button">Send Audio</button>
     </form>
-    <form id="videoUploadForm" enctype="multipart/form-data">
+    <!-- <form id="videoUploadForm" enctype="multipart/form-data">
       <input type="file" id="videoInput" name="video" accept="video/*" />
       <button type="button" id="sendVideoButton">Send Video</button>
-    </form>
-    <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
+    </form> -->
+    
   </div>
 </div>
 
 <script type="text/javascript">
   var socketio = io();
-//IMAGE
+  //IMAGE
   document.getElementById('sendImageButton').addEventListener('click', function() {
     const input = document.getElementById('imageInput');
     const file = input.files[0];
@@ -38,8 +45,8 @@
 
     reader.readAsDataURL(file);
   });
-// AUDIO
-document.getElementById('sendAudioButton').addEventListener('click', function() {
+//AUDIO
+  document.getElementById('sendAudioButton').addEventListener('click', function() {
     const input = document.getElementById('audioInput');
     const file = input.files[0];
     const reader = new FileReader();
@@ -51,68 +58,105 @@ document.getElementById('sendAudioButton').addEventListener('click', function() 
 
     reader.readAsDataURL(file);
   });
+//VIDEO
+  // document.getElementById('sendVideoButton').addEventListener('click', function() {
+  //   const input = document.getElementById('videoInput');
+  //   const file = input.files[0];
+  //   const reader = new FileReader();
 
-// VIDEO 
-document.getElementById('sendVideoButton').addEventListener('click', function() {
-    const input = document.getElementById('videoInput');
-    const file = input.files[0];
-    const reader = new FileReader();
+  //   reader.onload = function(event) {
+  //     const videoData = event.target.result; 
+  //     socketio.emit('video', { data: videoData }); 
+  //   };
 
-    reader.onload = function(event) {
-      const videoData = event.target.result; 
-      socketio.emit('video', { data: videoData }); 
-    };
+  //   reader.readAsDataURL(file);
+  // });
 
-    reader.readAsDataURL(file);
-  });
-//IMAGE
+  //IMAGE
   socketio.on('image', function(data) {
     const messages = document.getElementById('messages');
     const content = `
       <div class="message">
-        <span><strong>${data.name}</strong>: <img src="${data.image}" alt="Image" style="max-width: 300px;"></span>
-        <span class="muted">${data.timestamp}</span>
+        <span><strong>${data.name}</strong>: 
+          <div><img src="${data.image}" alt="Image" style="max-width: 300px;">
+           </div> 
+            </span>
+            <div>
+              <span class="muted">${data.timestamp}</span>
+            </div>
       </div>`;
     messages.insertAdjacentHTML('beforeend', content);
   });
-//AUDIO
-  socketio.on('audio', function(data) {
+//Audioo
+socketio.on('audio', function(data) {
     const messages = document.getElementById('messages');
     const content = `
-      <div class="message">
-        <span><strong>${data.name}</strong>: <audio controls><source src="${data.audio}" type="audio/mp3"></audio></span>
+      <div class="message-content">
+        <span><strong>${data.name}</strong>: 
+          <div><audio controls><source src="${data.audio}" type="audio/mp3"></audio> </div></span>
         <span class="muted">${data.timestamp}</span>
       </div>`;
     messages.insertAdjacentHTML('beforeend', content);
   });
+
   //Video
-  socketio.on('video', function(data) {
-    const messages = document.getElementById('messages');
-    const content = `
-      <div class="message">
-        <span><strong>${data.name}</strong>: <video controls><source src="${data.video}" type="video/mp4"></video></span>
-        <span class="muted">${data.timestamp}</span>
-      </div>`;
-    messages.insertAdjacentHTML('beforeend', content);
+  // socketio.on('video', function(data) {
+  //   const messages = document.getElementById('messages');
+  //   const content = `
+  //     <div class="message">
+  //       <span><strong>${data.name}</strong>: <video controls><source src="${data.video}" type="video/mp4"></video></span>
+  //       <span class="muted">${data.timestamp}</span>
+  //     </div>`;
+  //   messages.insertAdjacentHTML('beforeend', content);
+  // });
+
+
+  socketio.on('message', function(data) {
+    displayMessage(data);
   });
-//MESSAGES
+
+  function displayMessage(data) {
+    const messages = document.getElementById('messages');
+    const userColor = data.color || 'lightblue';
+    const joinRegex = /has joined the room/i;
+    const leftRegex = /has left the room/i;
+  if (joinRegex.test(data.message)||leftRegex.test(data.message)) {
+    const content = `
+      <div class="join-message">
+        <span><strong>${data.name}</strong>: ${data.message}</span>
+        <span class="muted">${new Date().toLocaleString()}</span>
+      </div>`;
+    messages.innerHTML += content;
+  } 
+  else{
+    const content = `
+      <div class="message" >
+        <span><strong>${data.name}</strong>: </span>
+        <div style="background-color: ${userColor};" class="message-content">${data.message}</div>
+        <span class="muted">${new Date().toLocaleString()}</span>
+      </div>`;
+
+    messages.insertAdjacentHTML('beforeend', content);
+  }
+  }
+
   const messages = document.getElementById("messages");
 
   const createMessage = (name, msg) => {
-    const content = `
-      <div class="text">
-        <span>
-          <strong>${name}</strong>: ${msg}
-        </span>
-        <span class="muted">${new Date().toLocaleString()}</span>
-      </div>
-    `;
-    messages.innerHTML += content;
-  };
+    const joinRegex = /has joined the room/i;
+  
+    if (joinRegex.test(msg)) {
+      const content = `
+        <div class="join-message">
+          <span><strong>${name}</strong>: ${msg}</span>
+          <span class="muted">${new Date().toLocaleString()}</span>
+        </div>`;
+      messages.innerHTML += content;
+    } 
 
   socketio.on("message", (data) => {
     createMessage(data.name, data.message);
-  });
+  });}
 
   const sendMessage = () => {
     const message = document.getElementById("message");
