@@ -190,5 +190,3 @@ def generate_random_pastel_color():
             return new_color
 
 
-if __name__ == '__main__':
-    socketio.run(app, debug=True)
