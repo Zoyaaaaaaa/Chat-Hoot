@@ -18,3 +18,10 @@ UUID: UUID module is used for generating unique filenames for uploaded files.
 Datetime: Datetime module is used for timestamping messages.
 OS: OS module is used for file operations like saving uploaded files.
 Random: Random module is used for generating random pastel colors for users.
+
+![image](https://github.com/Zoyaaaaaaa/Chat-Hoot/assets/126981793/00c2d616-4835-45e9-b587-5dbb873247ce)
+![image](https://github.com/Zoyaaaaaaa/Chat-Hoot/assets/126981793/0677034b-b626-4250-8a8e-27fc09579a6f)
+![image](https://github.com/Zoyaaaaaaa/Chat-Hoot/assets/126981793/accbdee8-2aa7-4218-b077-dde3f21d93a0)
+
+
+
