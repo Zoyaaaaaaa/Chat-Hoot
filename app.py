@@ -5,6 +5,11 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit
 import random
 from string import ascii_uppercase
 from datetime import datetime
+from flask import Flask, render_template
+from flask_socketio import SocketIO
+
+app = Flask(__name__)
+socketio = SocketIO(app)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -190,3 +195,9 @@ def generate_random_pastel_color():
             return new_color
 
 
+@app.route('/')
+def index():
+    return render_template('home.html')
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
